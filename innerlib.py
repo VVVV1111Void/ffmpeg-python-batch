@@ -1,13 +1,16 @@
 # Library containing the core functions
 import ffmpy
-import pathlib 
-
+import os
+from pathlib import Path
 # ffmpy is a library that does stuff that ffmpeg does
 # pathlib will be used to help standardize stuff and check if the directory exists
 
-
 def convert_dir(directory, target, source):
-    print('test')
+    true_path = Path(directory)
+    source_files = return_files(true_path, source)
+    for item in source_files:
+        name = item.stem
+        print(name)
 
 # source - the extensions that will be converted
 # target - the target file types that will be converted to
@@ -15,14 +18,39 @@ def convert_dir(directory, target, source):
 # Returns 0 on Success
 
 
-def verify(directory) -> bool:
-    return True
-    return False
+def verify_dir(directory) -> bool:
+    true_path = Path(directory)
+    if true_path.exists() and os.path.exists(true_path):
+        return True
+    else:
+        return False
 
 # Returns true if the directory exists
 # Returns false if it is not found
 
 def return_files(directory, extension) -> list:
-    file_list = []
-    return file_list
+    file_paths = []
+    dir_files = os.listdir(directory)
+    for name in dir_files:
+        true_file_path = Path(Path(directory) / Path(name))
+        if os.path.exists(true_file_path): # Re check if the file exists (again)
+            if true_file_path.suffix == f".{extension}": # Check if that file is a source file that will be converted
+                file_paths.append(true_file_path)
+            else:
+                continue
+        else:
+            raise Exception('Error. Was a file deleted while the script was running?')
+    return file_paths
+
 # Returns all file paths of files which has the extension given.
+# First, it runs os.listdir(directory) which returns all files.
+# For each file in the directory, it will be checked if it exists and has the source extension. eg, a file with .mp3 but the source is opus will be ignored.
+
+
+def verify_ext(extension, supported) -> bool:
+    if extension in supported:
+        return True
+    else:
+        return False
+
+# verify if the extensions are supported and exists
