@@ -3,22 +3,29 @@ import innerlib
 supported = [
     'mp3', 'mp4', 'opus', 'ogg', 'webm'
 ]
+
+
 def ask():
     try:
-        print('\n Please type or paste the file directory of the files you are trying to convert.')
+        print('\n Type or paste in the folder you are trying to convert.')
         target_dir = str(input("\n Enter the path of your file: "))
 
-        if innerlib.verify_dir(target_dir): # Verifies if the folder exists
-            ext = str(input("\n Please enter source file extension, eg. 'mp3'(without .): "))
-            tar = str(input("\n Please enter target file extension, eg. 'mp3'(without .): "))
-
-            if innerlib.verify_ext(ext, supported) and innerlib.verify_ext(tar, supported): # verifies if the extension is supported
-                innerlib.convert_dir(target_dir, tar, ext )
-                print('\n Conversion success!')
-                return 0
-
+        if innerlib.verify_dir(target_dir):  # Verifies if the folder exists
+            ext = str(
+                input("\n Enter source file extension, eg. 'mp3'(no .): "))
+            tar = str(
+                input("\n Enter target file extension, eg. 'mp3'(no .): "))
+            if innerlib.verify_ext(ext, supported):
+                if innerlib.verify_ext(tar, supported):
+                    innerlib.convert_dir(target_dir, tar, ext)
+                    print('\n Conversion success!')
+                    return 0
+                else:
+                    raise Exception(
+                        '\n Unable to verify extensions.')
             else:
-                raise Exception('\n Unable to verify extensions. / Unsupported extensions')
+                raise Exception(
+                    '\n Unable to verify extensions.')
         else:
             raise Exception('\n Unable to find directory')
 
@@ -31,7 +38,6 @@ def ask():
         else:
             return 1
 
-        
 
 if __name__ == "__main__":
     print('\n Hello!')
