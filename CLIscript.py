@@ -1,6 +1,6 @@
 # The main script for the file
 import innerlib
-supported = [
+SUPPORTED = [
     'mp3', 'mp4', 'opus', 'ogg', 'webm'
 ]
 
@@ -15,8 +15,8 @@ def ask():
                 input("\n Enter source file extension, eg. 'mp3'(no .): "))
             tar = str(
                 input("\n Enter target file extension, eg. 'mp3'(no .): "))
-            if innerlib.verify_ext(ext, supported):
-                if innerlib.verify_ext(tar, supported):
+            if innerlib.verify_ext(ext, SUPPORTED):
+                if innerlib.verify_ext(tar, SUPPORTED):
                     innerlib.convert_dir(target_dir, tar, ext)
                     print('\n Conversion success!')
                     return 0

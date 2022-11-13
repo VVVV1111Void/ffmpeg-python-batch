@@ -14,13 +14,28 @@ def convert_dir(directory, target, source):
     source_files = return_files(true_path, source)
     for item in source_files:
         name = item.stem
-        print(name)
-    return 0 
+        file_path = item
+        newpath = Path(directory) / Path(f'{name}.{target}')
+        if newpath.exists() is False:
+            converter = ffmpy.FFmpeg(
+                inputs={str(file_path): None},
+                outputs={str(newpath): None}
+            )
+            converter.run()
+        else:
+            continue
+    return 0
 
 # source - the extensions that will be converted
 # target - the target file types that will be converted to
 # directory - the directory which will be converted
 # Returns 0 on Success
+
+# First, it converts the path to a pathlib class
+# It runs a for loop for a every file
+# We then save the file name (no extensions) in a variable
+# using the file name, we prepare a new path for the new filetype in dir
+# If it already exists, we pass and move on (prevent duplicates)
 
 
 def verify_dir(directory) -> bool:
